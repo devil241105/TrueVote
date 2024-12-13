@@ -1,9 +1,10 @@
 import userModel from "../models/user.js";
 import bcrypt from "bcryptjs";
+import cookieParser from 'cookie-parser';
 
 const Register = async (req, res) => {
     try {
-        const { userName, email, password, user = "user" } = req.body;
+        const { username, email, password, user = "user" } = req.body;
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
             return res.status(303).json({ success: false, message: "User already exists. Please log in." });
@@ -12,7 +13,7 @@ const Register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = new userModel({
-            userName,
+            username,
             email,
             password: hashedPassword,
         });
@@ -47,7 +48,15 @@ const Login = async (req, res) => {
             return res.status(401).json({ success: false, message: "Invalid Password" });
         }
 
-        return res.status(200).json({ success: true, message: "Login successful", user: foundUser, token });
+        const userId = foundUser._id;
+        res.cookie('userId', userId, {
+            httpOnly: true, 
+            secure: process.env.NODE_ENV === 'production', 
+            maxAge: 24 * 60 * 60 * 1000, 
+            sameSite: 'Strict',
+        });
+
+        return res.status(200).json({ success: true, message: "Login successful", user: foundUser });
     } catch (error) {
         console.error("Login error:", error.message);
         return res.status(500).json({ success: false, message: "Internal Server Error", error: error.message });
