@@ -1,7 +1,7 @@
 import './config/db.js';
 import express from 'express';
 import cors from 'cors';
-// import AutRoutes from './routes/Auth.js';
+import AutRoutes from './routes/auth.js';
 // import postRoutes from './routes/post.js';
 // import profileRoutes from './routes/profile.js';
 import cookieParser from 'cookie-parser';
@@ -22,7 +22,7 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 
 
-// app.use('/auth', AutRoutes)
+app.use('/auth', AutRoutes)
 // app.use('', postRoutes)
 // app.use('', profileRoutes)
 
