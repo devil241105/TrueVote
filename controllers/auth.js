@@ -1,21 +1,33 @@
 import userModel from "../models/user.js";
 import bcrypt from "bcryptjs";
 import cookieParser from 'cookie-parser';
+import 'dotenv/config';
 
 const Register = async (req, res) => {
     try {
-        const { username, email, password, user = "user" } = req.body;
+        console.log(req.body)
+        console.log(req.file.filename)
+        const { username, email, password, aadharNo} = req.body;
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
             return res.status(303).json({ success: false, message: "User already exists. Please log in." });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-
+        
+    let savedPic = { public_id: "", url: "" }; 
+    if (req.file) {
+      savedPic = {
+        public_id: req.file.filename,
+        url: req.file.path,
+      };
+    }
         const newUser = new userModel({
             username,
             email,
             password: hashedPassword,
+            aadharNo,
+            savedPic,
         });
 
         await newUser.save();
@@ -130,7 +142,6 @@ const forgetPassword = async (req,res) => {
 //       res.status(500).json({ message: "Server error" });
 //     }
 //   };
-
 
 
 export { Register, Login, Logout, forgetPassword};
