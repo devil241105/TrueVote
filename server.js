@@ -1,11 +1,13 @@
 import './config/db.js';
 import express from 'express';
 import cors from 'cors';
-import AutRoutes from './routes/auth.js';
+import authRoutes from './routes/auth.js';
 // import postRoutes from './routes/post.js';
 // import profileRoutes from './routes/profile.js';
 import cookieParser from 'cookie-parser';
 import userRoutes from './routes/user.js';
+import electionRoutes from './routes/election.js';
+import partyRoutes from './routes/parties.js';
 
 const app = express();
 const port = 3000;
@@ -23,10 +25,10 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 
 
-app.use('/auth', AutRoutes)
-// app.use('', postRoutes)
-// app.use('', profileRoutes)
+app.use('/auth', authRoutes)
 app.use('/user',userRoutes)
+app.use('/election',electionRoutes)
+app.use('/party',partyRoutes)
 
 
 app.listen(port, () => {

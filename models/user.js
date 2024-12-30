@@ -16,7 +16,6 @@ const userSchema = new mongoose.Schema({
         required: [true, "Please enter an email"],
         unique: [true, "Email already exists"],
     },
-
     password: {
         type: String,
         required: [true, "Please enter a password"],
@@ -35,12 +34,17 @@ const userSchema = new mongoose.Schema({
         },
     ],
 
-    // votedParty: [
-    //     {
-    //         type:mongoose.Schema.Types.ObjectId,
-    //         ref: "election",
-    //     },
-    // ],
+    votedParty: [
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref: "party",
+        },
+    ],
+
+    isAdmin: {
+        type: Boolean,
+        default: false,
+    },
 
 
 

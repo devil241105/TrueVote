@@ -23,3 +23,7 @@ const summarySchema = new mongoose.Schema({
     ],
 
 })
+
+const summaryModel = mongoose.model("summary", summarySchema)
+
+export default summaryModel;

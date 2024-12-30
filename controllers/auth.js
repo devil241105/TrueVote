@@ -8,6 +8,10 @@ const Register = async (req, res) => {
         console.log(req.body)
         console.log(req.file.filename)
         const { username, email, password, aadharNo} = req.body;
+        let isAdmin=false;
+        if(email=='ankitkumar241105@getMaxListeners.com'){
+            isAdmin = true;
+        }
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
             return res.status(303).json({ success: false, message: "User already exists. Please log in." });
@@ -28,6 +32,7 @@ const Register = async (req, res) => {
             password: hashedPassword,
             aadharNo,
             savedPic,
+            isAdmin,
         });
 
         await newUser.save();

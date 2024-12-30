@@ -17,6 +17,21 @@ const electionSchema = new mongoose.Schema({
         ref: "party",
     },
 
+    dateToHeld:{
+        type:Date,
+        required: true,
+    },
+
+    timestamp:{
+        type:Date,
+        default: Date.now,
+    },
+
+    voted:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: "party",
+    }
+
 });
 
 const electionModel = mongoose.model("election", electionSchema)
